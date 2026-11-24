@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kashi-Magadh Spiritual Trails</title>
+  <style>
+    :root {
+      --bg: #faf7f2;
+      --surface: #ffffff;
+      --ink: #1e1b18;
+      --muted: #5c534a;
+      --accent: #b84a14;
+      --accent-dark: #8e350a;
+      --gold: #d49b27;
+      --border: #e6dfd5;
+      --soft: #f3ede4;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.55;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    button, input, select {
+      font: inherit;
+    }
+    button {
+      cursor: pointer;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      padding: 9px 14px;
+      transition: 0.15s ease;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      font-weight: 600;
+    }
+    .btn-primary:hover { background: var(--accent-dark); }
+    .btn-outline {
+      background: #fff;
+      color: var(--ink);
+      border-color: var(--border);
+    }
+    .btn-outline:hover { background: var(--soft); }
+    .btn-chip.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    /* Header */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-wrap {
+      max-width: 1200px;
+      margin: auto;
+      padding: 12px 16px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .brand {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--accent-dark);
+    }
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+    nav a { color: var(--ink); }
+    .auth-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+    }
+
+    /* Hero */
+    .hero {
+      position: relative;
+      min-height: 430px;
+      display: flex;
+      align-items: flex-end;
+      overflow: hidden;
+      background: #231912;
+      color: #fff;
+    }
+    .hero img.hero-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.52;
+    }
+    .hero-overlay {
+      position: relative;
+      z-index: 2;
+      max-width: 1200px;
+      width: 100%;
+      margin: auto;
+      padding: 36px 16px 28px;
+    }
+    .hero-tag {
+      display: inline-block;
+      background: rgba(212, 155, 39, 0.25);
+      border: 1px solid rgba(255, 224, 150, 0.5);
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      margin-bottom: 10px;
+    }
+    .hero h1 { font-size: clamp(1.7rem, 4vw, 2.7rem); margin-bottom: 8px; }
+    .hero p { max-width: 720px; color: #f4ece1; margin-bottom: 16px; }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+    }
+    .hero-links {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      font-size: 0.9rem;
+    }
+    .hero-links a {
+      color: #ffd98e;
+      font-weight: 600;
+    }
+
+    /* Sections */
+    section {
+      max-width: 1200px;
+      margin: auto;
+      padding: 40px 16px;
+    }
+    .sec-head {
+      margin-bottom: 20px;
+    }
+    .sec-head h2 {
+      font-size: 1.55rem;
+      margin-bottom: 4px;
+    }
+    .sec-head p {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    /* Destinations Grid */
+    .city-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+      gap: 18px;
+    }
+    .city-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    }
+    .city-card .main-photo {
+      width: 100%;
+      height: 205px;
+      object-fit: cover;
+      background: var(--soft);
+    }
+    .thumb-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(56px, 1fr));
+      gap: 6px;
+      padding: 8px 14px 0;
+    }
+    .thumb-strip img {
+      width: 100%;
+      height: 48px;
+      object-fit: cover;
+      border-radius: 6px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      background: var(--soft);
+    }
+    .thumb-strip img.active-thumb {
+      border-color: var(--accent);
+    }
+    .city-body {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+    }
+    .city-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+    }
+    .city-top h3 { font-size: 1.15rem; }
+    .badge {
+      background: var(--soft);
+      color: var(--accent-dark);
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .meta-line {
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+    .ext-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding-top: 6px;
+      margin-top: auto;
+      border-top: 1px solid var(--border);
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+
+    /* Builder */
+    .builder-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      display: grid;
+      grid-template-columns: 1.35fr 0.95fr;
+      gap: 22px;
+    }
+    @media (max-width: 860px) {
+      .builder-box { grid-template-columns: 1fr; }
+    }
+    .group-block { margin-bottom: 18px; }
+    .group-block label.title-lbl {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+    }
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .city-checks {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(165px, 1fr));
+      gap: 8px;
+    }
+    .check-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+    .controls-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+    }
+    .field input, .field select {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #fff;
+    }
+    .smart-note {
+      margin-top: 8px;
+      background: #fff6ea;
+      border: 1px solid #f0cfa0;
+      color: #6d3808;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+    }
+
+    /* Summary Card */
+    .summary-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+      align-self: start;
+    }
+    .summary-card h3 { margin-bottom: 10px; }
+    .route-path {
+      background: #fff;
+      border: 1px dashed var(--accent);
+      padding: 10px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.92rem;
+      margin-bottom: 14px;
+    }
+    .sum-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 0.92rem;
+    }
+    .sum-total {
+      display: flex;
+      justify-content: space-between;
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--accent-dark);
+      border-top: 1px solid var(--border);
+      padding-top: 10px;
+      margin: 12px 0 16px;
+    }
+
+    /* Packages & Season/Festival */
+    .pkg-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .pkg-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .pkg-price {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--accent);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      font-size: 0.9rem;
+    }
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    th {
+      background: var(--soft);
+      font-weight: 700;
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 80;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal-box {
+      background: #fff;
+      border-radius: 14px;
+      max-width: 520px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 20px;
+      border: 1px solid var(--border);
+    }
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+    .modal-field { margin-bottom: 12px; }
+    .modal-field label {
+      display: block;
+      font-size: 0.88rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .modal-field input, .modal-field select {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+    .receipt-box {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+      margin-top: 12px;
+      font-size: 0.9rem;
+    }
+
+    footer {
+      background: #1c1713;
+      color: #e8dfd3;
+      padding: 28px 16px;
+      margin-top: 24px;
+    }
+    .foot-wrap {
+      max-width: 1200px;
+      margin: auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 16px;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="nav-wrap">
+    <div class="brand">Kashi-Magadh Spiritual Trails</div>
+    <nav>
+      <a href="#places">Destinations</a>
+      <a href="#builder">Trip &amp; Route Planner</a>
+      <a href="#packages">Packages</a>
+      <a href="#calendar">Seasons &amp; Festivals</a>
+    </nav>
+    <div class="auth-box" id="authBox"></div>
+  </div>
+</header>
+
+<section class="hero" style="max-width:none; padding:0;">
+  <img id="heroImg" class="hero-bg" src="images/VNS5.jpeg" alt="Kashi-Magadh Spiritual Trails" />
+  <div class="hero-overlay">
+    <div class="hero-tag" id="heroSpotTag">Varanasi · Ghats &amp; Kashi</div>
+    <h1>Kashi-Magadh Spiritual Trails</h1>
+    <p>Custom journeys across Varanasi, Gaya, Sasaram, Mundeshwari, Ayodhya, and Prayagraj with rental bike, cab, or bus options, 2-star, 3-star, and 4-star stays, and meal plans.</p>
+    <div class="hero-actions">
+      <a href="#builder" class="btn-primary" style="display:inline-block; border-radius:8px; padding:10px 16px;">Plan Your Route</a>
+      <button type="button" class="btn-outline" onclick="cycleHero()">Next Destination</button>
+    </div>
+    <div class="hero-links" id="heroExtLinks"></div>
+  </div>
+</section>
+
+<section id="places">
+  <div class="sec-head">
+    <h2>Featured Destinations</h2>
+    <p>Browse destination photos, click thumbnails to switch views, and open Google Maps or Google Search directly.</p>
+  </div>
+  <div class="city-grid" id="cityGrid"></div>
+</section>
+
+<section id="builder">
+  <div class="sec-head">
+    <h2>Route, Transport, Hotel &amp; Meal Planner</h2>
+    <p>Choose preset routes like Varanasi to Ayodhya or Varanasi–Prayagraj–Ayodhya, or customise stops, transport (rental bike, cab, bus), hotel tier (2★, 3★, 4★), and meals.</p>
+  </div>
+  <div class="builder-box">
+    <div>
+      <div class="group-block">
+        <label class="title-lbl">1. Quick Route Presets</label>
+        <div class="chip-row" id="presetChips"></div>
+      </div>
+
+      <div class="group-block">
+        <label class="title-lbl">2. Select or Deselect Destinations</label>
+        <div class="city-checks" id="cityChecks"></div>
+      </div>
+
+      <div class="group-block">
+        <label class="title-lbl">3. Travellers, Days, Transport, Hotel &amp; Meals</label>
+        <div class="controls-row">
+          <div class="field">
+            <label for="guestsInput">Travellers</label>
+            <input type="number" id="guestsInput" min="1" max="45" value="2" />
+          </div>
+          <div class="field">
+            <label for="daysInput">Days</label>
+            <input type="number" id="daysInput" min="1" max="15" value="3" />
+          </div>
+          <div class="field">
+            <label for="transportSelect">Transport</label>
+            <select id="transportSelect">
+              <option value="bike">Rental Bike (1–2 travellers)</option>
+              <option value="cab">Private Cab (3–6 travellers)</option>
+              <option value="bus">Bus / Traveller (7+ travellers)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="hotelSelect">Hotel Tier</label>
+            <select id="hotelSelect">
+              <option value="2star">2-Star Stay</option>
+              <option value="3star" selected>3-Star Stay</option>
+              <option value="4star">4-Star Stay</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="foodSelect">Meals</label>
+            <select id="foodSelect">
+              <option value="satvik" selected>Satvik &amp; Local Meals Included</option>
+              <option value="breakfast">Breakfast Only</option>
+              <option value="none">Meals Excluded</option>
+            </select>
+          </div>
+        </div>
+        <div class="smart-note" id="smartTransportNote"></div>
+      </div>
+    </div>
+
+    <div class="summary-card">
+      <h3>Your Custom Itinerary Summary</h3>
+      <div class="route-path" id="selectedRouteText"></div>
+      <div class="sum-row"><span>Transport &amp; Route:</span><strong id="costTransport">₹0</strong></div>
+      <div class="sum-row"><span>Hotel Stay:</span><strong id="costHotel">₹0</strong></div>
+      <div class="sum-row"><span>Meals:</span><strong id="costFood">₹0</strong></div>
+      <div class="sum-total"><span>Estimated Total:</span><span id="costTotal">₹0</span></div>
+      <button type="button" class="btn-primary" style="width:100%;" onclick="openCheckoutFromBuilder()">Proceed to Payment / Book</button>
+    </div>
+  </div>
+</section>
+
+<section id="packages">
+  <div class="sec-head">
+    <h2>Curated Packages</h2>
+    <p>Load a preset package into the planner or proceed straight to booking. Pricing can be adjusted anytime.</p>
+  </div>
+  <div class="pkg-grid" id="pkgGrid"></div>
+</section>
+
+<section id="calendar">
+  <div class="sec-head">
+    <h2>Best Seasons &amp; Key Festivals</h2>
+    <p>Ideal travel windows and major celebrations across all six destinations.</p>
+  </div>
+  <div style="overflow-x:auto;">
+    <table>
+      <thead>
+        <tr>
+          <th>Destination</th>
+          <th>Best Season</th>
+          <th>Key Festivals / Highlights</th>
+          <th>Quick Links</th>
+        </tr>
+      </thead>
+      <tbody id="seasonTableBody"></tbody>
+    </table>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-wrap">
+    <div>
+      <strong>Kashi-Magadh Spiritual Trails</strong><br />
+      Varanasi · Gaya · Sasaram · Mundeshwari · Ayodhya · Prayagraj
+    </div>
+    <div>
+      Place your local photos inside the <code>images/</code> folder so every image loads properly.
+    </div>
+  </div>
+</footer>
+
+<!-- Auth Modal -->
+<div class="modal-backdrop" id="authModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3 id="authModalTitle">Login / Register</h3>
+      <button type="button" class="btn-outline" onclick="closeModal('authModal')">Close</button>
+    </div>
+    <div class="chip-row" style="margin-bottom:12px;">
+      <button type="button" class="btn-outline btn-chip active" id="tabLogin" onclick="switchAuthTab('login')">Login</button>
+      <button type="button" class="btn-outline btn-chip" id="tabRegister" onclick="switchAuthTab('register')">Register</button>
+    </div>
+    <form id="authForm">
+      <div class="modal-field" id="nameField" style="display:none;">
+        <label for="authName">Full Name</label>
+        <input type="text" id="authName" placeholder="Enter your full name" />
+      </div>
+      <div class="modal-field">
+        <label for="authEmail">Email or Mobile</label>
+        <input type="text" id="authEmail" required placeholder="name@example.com or 98XXXXXXXX" />
+      </div>
+      <div class="modal-field">
+        <label for="authPass">Password</label>
+        <input type="password" id="authPass" required placeholder="Enter password" />
+      </div>
+      <button type="submit" class="btn-primary" style="width:100%;" id="authSubmitBtn">Login</button>
+    </form>
+  </div>
+</div>
+
+<!-- Payment Modal -->
+<div class="modal-backdrop" id="payModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3>Booking &amp; Payment</h3>
+      <button type="button" class="btn-outline" onclick="closeModal('payModal')">Close</button>
+    </div>
+    <form id="payForm">
+      <div class="modal-field">
+        <label>Selected Route</label>
+        <input type="text" id="payRoute" readonly />
+      </div>
+      <div class="modal-field">
+        <label>Total Amount (₹)</label>
+        <input type="text" id="payAmount" readonly />
+      </div>
+      <div class="modal-field">
+        <label for="payMethod">Payment Method</label>
+        <select id="payMethod">
+          <option value="UPI (GPay / PhonePe / Paytm)">UPI (GPay / PhonePe / Paytm)</option>
+          <option value="Debit / Credit Card">Debit / Credit Card</option>
+          <option value="Net Banking">Net Banking</option>
+          <option value="Advance Token (₹1,000)">Advance Token (₹1,000)</option>
+        </select>
+      </div>
+      <div class="modal-field">
+        <label for="payYatriName">Traveller Name</label>
+        <input type="text" id="payYatriName" required placeholder="Name for booking" />
+      </div>
+      <button type="submit" class="btn-primary" style="width:100%;">Confirm Payment</button>
+    </form>
+    <div class="receipt-box" id="payReceipt" style="display:none;"></div>
+  </div>
+</div>
+
+<script>
+  const PLACES = [
+    {
+      id: "banaras",
+      name: "Varanasi",
+      tag: "Ghats & Kashi",
+      bestSeason: "October to March",
+      festival: "Dev Deepawali (Kartik Purnima) & Mahashivratri",
+      images: [
+        "images/VNS.jpeg",
+        "images/VNS2.jpeg",
+        "images/VNS3.jpeg",
+        "images/VNS4.jpeg",
+        "images/VNS5.jpeg"
+      ],
+      mapUrl: "https://www.google.com/maps/search/?api=1&query=Varanasi+Ghat+India",
+      searchUrl: "https://www.google.com/search?q=Varanasi+tourism+festivals"
+    },
+    {
+      id: "prayagraj",
+      name: "Prayagraj",
+      tag: "Triveni Sangam",
+      bestSeason: "November to February",
+      festival: "Magh Mela, Kumbh / Mahakumbh & Makar Sankranti",
+      images: [
+        "images/pra1.jpeg",
+        "images/pra2.jpeg",
+        "images/pra3.jpeg"
+      ],
+      mapUrl: "https://www.google.com/maps/search/?api=1&query=Triveni+Sangam+Prayagraj",
+      searchUrl: "https://www.google.com/search?q=Prayagraj+Triveni+Sangam+Magh+Mela"
+    },
+    {
+      id: "sasaram",
+      name: "Sasaram",
+      tag: "Sher Shah Tomb & Hills",
+      bestSeason: "October to February (Waterfalls: July–September)",
+      festival: "Sher Shah Suri Jayanti & Chhath Puja",
+      images: [
+        "images/ssm1.jpeg",
+        "images/ssm2.jpeg",
+        "images/ssm3.jpeg",
+        "images/ssm4.jpeg",
+        "images/ssm5.jpeg"
+      ],
+      mapUrl: "https://www.google.com/maps/search/?api=1&query=Sher+Shah+Suri+Tomb+Sasaram",
+      searchUrl: "https://www.google.com/search?q=Sasaram+Bihar+tourism+places"
+    },
+    {
+      id: "mundeshwari",
+      name: "Mundeshwari",
+      tag: "Ancient Kaimur Temple",
+      bestSeason: "October to March",
+      festival: "Chaitra & Shardiya Navratri",
+      images: [
+        "images/mund1.jpeg",
+        "images/mund2.jpeg",
+        "images/mund3.jpeg"
+      ],
+      mapUrl: "https://www.google.com/maps/search/?api=1&query=Mundeshwari+Temple+Kaimur+Bihar",
+      searchUrl: "https://www.google.com/search?q=Mundeshwari+Temple+Kaimur+history"
+    },
+    {
+      id: "gaya",
+      name: "Gaya & Bodh Gaya",
+      tag: "Vishnupad & Mahabodhi",
+      bestSeason: "October to March",
+      festival: "Pitru Paksha Mela & Buddha Jayanti",
+      images: [
+        "images/bodh1.jpeg",
+        "images/bodh2.jpeg",
+        "images/bodh4.jpeg",
+        "images/bodh5.jpeg"
+      ],
+      mapUrl: "https://www.google.com/maps/search/?api=1&query=Bodh+Gaya+Bihar",
+      searchUrl: "https://www.google.com/search?q=Gaya+Bodh+Gaya+Mahabodhi+tourism"
+    },
+    {
+      id: "ayodhya",
+      name: "Ayodhya",
+      tag: "Saryu & Ram Mandir",
+      bestSeason: "October to March",
+      festival: "Deepotsav & Ram Navami",
+      images: [
+        "images/ayo1.jpeg",
+        "images/ayo2.jpeg",
+        "images/ayo3.jpeg"
+      ],
+      mapUrl: "https://www.google.com/maps/search/?api=1&query=Ayodhya+Uttar+Pradesh",
+      searchUrl: "https://www.google.com/search?q=Ayodhya+Ram+Mandir+Deepotsav"
+    }
+  ];
+
+  const PRESETS = [
+    { label: "Varanasi -> Ayodhya", ids: ["banaras", "ayodhya"] },
+    { label: "Varanasi -> Prayagraj -> Ayodhya", ids: ["banaras", "prayagraj", "ayodhya"] },
+    { label: "Varanasi -> Sasaram -> Mundeshwari -> Gaya", ids: ["banaras", "sasaram", "mundeshwari", "gaya"] },
+    { label: "All 6 Destinations", ids: ["banaras", "prayagraj", "ayodhya", "sasaram", "mundeshwari", "gaya"] }
+  ];
+
+  const PACKAGES = [
+    {
+      title: "Kashi-Ayodhya Darshan Trail",
+      detail: "Varanasi + Ayodhya · 3 Days · Cab/Bike + 3-Star Stay + Satvik Meals",
+      price: 11500,
+      ids: ["banaras", "ayodhya"],
+      days: 3
+    },
+    {
+      title: "Sangam & Awadh Yatra",
+      detail: "Varanasi + Prayagraj + Ayodhya · 4 Days · Cab/Bus + 3-Star Stay + Meals",
+      price: 15500,
+      ids: ["banaras", "prayagraj", "ayodhya"],
+      days: 4
+    },
+    {
+      title: "Magadh-Kaimur Heritage Trail",
+      detail: "Varanasi + Sasaram + Mundeshwari + Gaya · 4 Days · Cab/Bike + 2/3-Star + Meals",
+      price: 14500,
+      ids: ["banaras", "sasaram", "mundeshwari", "gaya"],
+      days: 4
+    }
+  ];
+
+  const FALLBACK_IMG = "data:image/svg+xml;utf8," + encodeURIComponent(
+    `<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360" viewBox="0 0 600 360">
+      <rect width="600" height="360" fill="#efe7da"/>
+      <text x="50%" y="48%" dominant-baseline="middle" text-anchor="middle" fill="#6b5844" font-family="sans-serif" font-size="18" font-weight="bold">Place photos inside images/ folder</text>
+      <text x="50%" y="58%" dominant-baseline="middle" text-anchor="middle" fill="#8a745c" font-family="sans-serif" font-size="13">Kashi-Magadh Spiritual Trails</text>
+    </svg>`
+  );
+
+  let state = {
+    selectedIds: ["banaras", "ayodhya"],
+    guests: 2,
+    days: 3,
+    transport: "bike",
+    hotel: "3star",
+    food: "satvik",
+    heroIndex: 0,
+    user: JSON.parse(localStorage.getItem("kmst_user") || "null"),
+    authTab: "login"
+  };
+
+  function handleImgError(img) {
+    if (!img.dataset.fallbackApplied) {
+      img.dataset.fallbackApplied = "1";
+      img.src = FALLBACK_IMG;
+    }
+  }
+
+  function renderHero() {
+    const place = PLACES[state.heroIndex % PLACES.length];
+    const heroImg = document.getElementById("heroImg");
+    heroImg.dataset.fallbackApplied = "";
+    heroImg.src = place.images[0];
+    heroImg.onerror = () => handleImgError(heroImg);
+
+    document.getElementById("heroSpotTag").textContent = `${place.name} · ${place.tag}`;
+    document.getElementById("heroExtLinks").innerHTML = `
+      <a href="${place.mapUrl}" target="_blank" rel="noopener">Google Maps (${place.name})</a>
+      <a href="${place.searchUrl}" target="_blank" rel="noopener">Search ${place.name} on Google</a>
+    `;
+  }
+  function cycleHero() {
+    state.heroIndex = (state.heroIndex + 1) % PLACES.length;
+    renderHero();
+  }
+
+  function renderPlaces() {
+    const grid = document.getElementById("cityGrid");
+    grid.innerHTML = PLACES.map((p, idx) => {
+      const thumbsHtml = p.images.map((src, tIdx) => `
+        <img src="${src}" alt="${p.name} photo ${tIdx + 1}" class="${tIdx === 0 ? "active-thumb" : ""}"
+             onclick="switchCardPhoto(${idx}, ${tIdx}, this)" onerror="handleImgError(this)" />
+      `).join("");
+
+      return `
+        <article class="city-card">
+          <img id="mainPhoto-${idx}" class="main-photo" src="${p.images[0]}" alt="${p.name}" onerror="handleImgError(this)" />
+          <div class="thumb-strip">${thumbsHtml}</div>
+          <div class="city-body">
+            <div class="city-top">
+              <h3>${p.name}</h3>
+              <span class="badge">${p.tag}</span>
+            </div>
+            <div class="meta-line"><strong>Best Season:</strong> ${p.bestSeason}</div>
+            <div class="meta-line"><strong>Festivals:</strong> ${p.festival}</div>
+            <div class="ext-links">
+              <a href="${p.mapUrl}" target="_blank" rel="noopener">Google Maps</a>
+              <a href="${p.searchUrl}" target="_blank" rel="noopener">Google Search</a>
+            </div>
+          </div>
+        </article>
+      `;
+    }).join("");
+  }
+
+  function switchCardPhoto(placeIdx, photoIdx, thumbEl) {
+    const mainImg = document.getElementById(`mainPhoto-${placeIdx}`);
+    mainImg.dataset.fallbackApplied = "";
+    mainImg.src = PLACES[placeIdx].images[photoIdx];
+    mainImg.onerror = () => handleImgError(mainImg);
+
+    const parent = thumbEl.parentElement;
+    parent.querySelectorAll("img").forEach(el => el.classList.remove("active-thumb"));
+    thumbEl.classList.add("active-thumb");
+  }
+
+  function renderBuilderControls() {
+    const presetWrap = document.getElementById("presetChips");
+    presetWrap.innerHTML = PRESETS.map(pr => `
+      <button type="button" class="btn-outline btn-chip" onclick="applyPreset('${pr.ids.join(",")}')">${pr.label}</button>
+    `).join("");
+
+    const checksWrap = document.getElementById("cityChecks");
+    checksWrap.innerHTML = PLACES.map(p => `
+      <label class="check-pill">
+        <input type="checkbox" value="${p.id}" ${state.selectedIds.includes(p.id) ? "checked" : ""} onchange="toggleCity('${p.id}')" />
+        <span>${p.name}</span>
+      </label>
+    `).join("");
+  }
+
+  function applyPreset(csv) {
+    state.selectedIds = csv.split(",").filter(Boolean);
+    renderBuilderControls();
+    recalculate();
+  }
+
+  function toggleCity(id) {
+    if (state.selectedIds.includes(id)) {
+      if (state.selectedIds.length === 1) return;
+      state.selectedIds = state.selectedIds.filter(x => x !== id);
+    } else {
+      state.selectedIds.push(id);
+    }
+    recalculate();
+  }
+
+  function recalculate() {
+    const guests = Math.max(1, Number(document.getElementById("guestsInput").value) || 1);
+    const days = Math.max(1, Number(document.getElementById("daysInput").value) || 1);
+    const transport = document.getElementById("transportSelect").value;
+    const hotel = document.getElementById("hotelSelect").value;
+    const food = document.getElementById("foodSelect").value;
+
+    state.guests = guests;
+    state.days = days;
+    state.transport = transport;
+    state.hotel = hotel;
+    state.food = food;
+
+    const noteEl = document.getElementById("smartTransportNote");
+    if (guests <= 2) {
+      noteEl.textContent = "Suggestion: Rental Bike works well for 1–2 travellers, or you can choose a Private Cab.";
+    } else if (guests <= 6) {
+      noteEl.textContent = "Suggestion: Private Cab is ideal for 3–6 travellers.";
+    } else {
+      noteEl.textContent = "Suggestion: A Bus or Tempo Traveller is recommended for 7 or more travellers.";
+    }
+
+    const stopCount = Math.max(1, state.selectedIds.length);
+    const routeNames = state.selectedIds
+      .map(id => PLACES.find(p => p.id === id)?.name)
+      .filter(Boolean);
+
+    document.getElementById("selectedRouteText").textContent =
+      routeNames.join("  ->  ") + ` (${days} Days · ${guests} Travellers)`;
+
+    let transportCost = 0;
+    if (transport === "bike") {
+      const bikesNeeded = Math.ceil(guests / 2);
+      transportCost = bikesNeeded * days * 600 + stopCount * 200;
+    } else if (transport === "cab") {
+      transportCost = days * 2400 + stopCount * 500;
+    } else {
+      transportCost = days * 5500 + stopCount * 900;
+    }
+
+    const roomsNeeded = Math.ceil(guests / 2);
+    const hotelRatePerNight = hotel === "2star" ? 1100 : hotel === "3star" ? 2100 : 3800;
+    const hotelCost = roomsNeeded * days * hotelRatePerNight;
+
+    const foodRatePerDay = food === "satvik" ? 550 : food === "breakfast" ? 200 : 0;
+    const foodCost = guests * days * foodRatePerDay;
+
+    const total = transportCost + hotelCost + foodCost;
+
+    document.getElementById("costTransport").textContent = "₹" + transportCost.toLocaleString("en-IN");
+    document.getElementById("costHotel").textContent = "₹" + hotelCost.toLocaleString("en-IN");
+    document.getElementById("costFood").textContent = "₹" + foodCost.toLocaleString("en-IN");
+    document.getElementById("costTotal").textContent = "₹" + total.toLocaleString("en-IN");
+
+    return { routeText: routeNames.join(" -> "), total };
+  }
+
+  function renderPackagesAndCalendar() {
+    document.getElementById("pkgGrid").innerHTML = PACKAGES.map((pk, i) => `
+      <div class="pkg-card">
+        <div>
+          <h3>${pk.title}</h3>
+          <p style="color:var(--muted); font-size:0.9rem; margin-top:6px;">${pk.detail}</p>
+        </div>
+        <div>
+          <div class="pkg-price">₹${pk.price.toLocaleString("en-IN")}</div>
+          <div style="display:flex; gap:8px; margin-top:10px;">
+            <button type="button" class="btn-outline" onclick="loadPackageIntoBuilder(${i})">Load in Planner</button>
+            <button type="button" class="btn-primary" onclick="openPayModal('${pk.title}', ${pk.price})">Book Now</button>
+          </div>
+        </div>
+      </div>
+    `).join("");
+
+    document.getElementById("seasonTableBody").innerHTML = PLACES.map(p => `
+      <tr>
+        <td><strong>${p.name}</strong></td>
+        <td>${p.bestSeason}</td>
+        <td>${p.festival}</td>
+        <td>
+          <a href="${p.mapUrl}" target="_blank" rel="noopener">Maps</a> |
+          <a href="${p.searchUrl}" target="_blank" rel="noopener">Google</a>
+        </td>
+      </tr>
+    `).join("");
+  }
+
+  function loadPackageIntoBuilder(idx) {
+    const pk = PACKAGES[idx];
+    state.selectedIds = [...pk.ids];
+    document.getElementById("daysInput").value = pk.days;
+    renderBuilderControls();
+    recalculate();
+    document.getElementById("builder").scrollIntoView({ behavior: "smooth" });
+  }
+
+  function renderAuthBox() {
+    const box = document.getElementById("authBox");
+    if (state.user) {
+      box.innerHTML = `
+        <span>Welcome, <strong>${state.user.name}</strong></span>
+        <button type="button" class="btn-outline" onclick="logoutUser()">Logout</button>
+      `;
+    } else {
+      box.innerHTML = `
+        <button type="button" class="btn-outline" onclick="openAuthModal('login')">Login</button>
+        <button type="button" class="btn-primary" onclick="openAuthModal('register')">Register</button>
+      `;
+    }
+  }
+
+  function openAuthModal(tab) {
+    switchAuthTab(tab);
+    document.getElementById("authModal").classList.add("open");
+  }
+
+  function switchAuthTab(tab) {
+    state.authTab = tab;
+    const isReg = tab === "register";
+    document.getElementById("tabLogin").classList.toggle("active", !isReg);
+    document.getElementById("tabRegister").classList.toggle("active", isReg);
+    document.getElementById("nameField").style.display = isReg ? "block" : "none";
+    document.getElementById("authModalTitle").textContent = isReg ? "Create an Account" : "Login to Your Account";
+    document.getElementById("authSubmitBtn").textContent = isReg ? "Register" : "Login";
+  }
+
+  function logoutUser() {
+    state.user = null;
+    localStorage.removeItem("kmst_user");
+    renderAuthBox();
+  }
+
+  document.getElementById("authForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+    const email = document.getElementById("authEmail").value.trim();
+    const typedName = document.getElementById("authName").value.trim();
+    const name = typedName || email.split("@")[0] || "Traveller";
+    state.user = { name, email };
+    localStorage.setItem("kmst_user", JSON.stringify(state.user));
+    renderAuthBox();
+    closeModal("authModal");
+  });
+
+  function openCheckoutFromBuilder() {
+    const info = recalculate();
+    openPayModal(info.routeText, info.total);
+  }
+
+  function openPayModal(routeLabel, amount) {
+    document.getElementById("payRoute").value = routeLabel;
+    document.getElementById("payAmount").value = "₹" + Number(amount).toLocaleString("en-IN");
+    document.getElementById("payYatriName").value = state.user ? state.user.name : "";
+    document.getElementById("payReceipt").style.display = "none";
+    document.getElementById("payModal").classList.add("open");
+  }
+
+  document.getElementById("payForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+    const yatri = document.getElementById("payYatriName").value.trim();
+    const route = document.getElementById("payRoute").value;
+    const amt = document.getElementById("payAmount").value;
+    const method = document.getElementById("payMethod").value;
+    const bookingId = "KMST-" + Math.floor(100000 + Math.random() * 900000);
+
+    const rec = document.getElementById("payReceipt");
+    rec.style.display = "block";
+    rec.innerHTML = `
+      <strong>Booking Request Recorded</strong><br />
+      Booking ID: <code>${bookingId}</code><br />
+      Traveller: ${yatri}<br />
+      Route: ${route}<br />
+      Amount: ${amt} (${method})
+    `;
+  });
+
+  function closeModal(id) {
+    document.getElementById(id).classList.remove("open");
+  }
+
+  ["guestsInput", "daysInput", "transportSelect", "hotelSelect", "foodSelect"].forEach(id => {
+    document.getElementById(id).addEventListener("input", recalculate);
+    document.getElementById(id).addEventListener("change", recalculate);
+  });
+
+  renderAuthBox();
+  renderHero();
+  renderPlaces();
+  renderBuilderControls();
+  renderPackagesAndCalendar();
+  recalculate();
+</script>
+</body>
+</html>
